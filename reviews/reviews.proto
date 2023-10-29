@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package reviews;
+
+option go_package = "./reviews";
+
+service ReviewsService {
+    rpc CreateReview (ReviewRequest) returns (ReviewResponse);
+    rpc GetReviews (ProductId) returns (stream Review);
+    rpc UpdateReview (Review) returns (Count);
+    rpc DeleteReview (ReviewId) returns (Count);
+}
+
+message ProductId {
+    string id = 1;
+}
+
+message Count {
+    string count = 1;
+}
+
+message ReviewId {
+    string id = 1;
+}
+
+message Review {
+    string id = 1;
+    string msg = 2;
+    string userId = 3;
+    string productId = 4;
+    string time = 5;
+    string date = 6;
+}
+
+message ReviewRequest {
+    Review reviewEntry = 1;
+}
+
+message ReviewResponse {
+    Review response = 1;
+}

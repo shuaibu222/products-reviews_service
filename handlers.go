@@ -55,6 +55,13 @@ func (r *ReviewsServer) CreateReview(ctx context.Context, req *reviews.ReviewReq
 		Response: &reviewInserted,
 	}
 
+	res := []byte(review.Msg)
+
+	err = app.SendReviewToRabbitmq(res)
+	if err != nil {
+		log.Println(err)
+	}
+
 	return response, nil
 }
 
@@ -65,8 +72,6 @@ func (u *ReviewsServer) GetReviews(req *reviews.ProductId, stream reviews.Review
 	if err != nil {
 		log.Println("Failed to get reviews", err)
 	}
-
-	log.Println("recieved request")
 
 	for _, reviewEntry := range reviewsResult {
 		reviewResponse := &reviews.Review{

@@ -15,6 +15,8 @@ const (
 	gRpcPort = "50003"
 )
 
+var app Config
+
 type Config struct{}
 
 func main() {

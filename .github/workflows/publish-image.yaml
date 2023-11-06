@@ -9,7 +9,7 @@ jobs:
             - name: build
               run: |
                 docker build -f ./reviews.dockerfile -t shuaibu12345/reviews:latest .
-            - name: publish
+            - name: publishing to docker hub
               run: |
                 docker login -u shuaibu12345 -p ${{ secrets.DOCKER_HUB_TOKEN }}
                 docker push shuaibu12345/reviews:latest

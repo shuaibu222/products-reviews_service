@@ -13,7 +13,8 @@ import (
 
 var collection *mongo.Collection
 
-const mongoURL = "mongodb://host.minikube.internal:27017"
+// const mongoURL = "mongodb://host.minikube.internal:27017"
+const mongoURL = "mongodb://mongo:27017"
 
 // connect with MongoDB
 func init() {

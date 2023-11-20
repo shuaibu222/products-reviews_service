@@ -59,7 +59,7 @@ func (r *ReviewsServer) CreateReview(ctx context.Context, req *reviews.ReviewReq
 
 	err = app.SendReviewToRabbitmq(res)
 	if err != nil {
-		log.Println(err)
+		log.Println("Review service error sending to rabbitmq", err)
 	}
 
 	return response, nil

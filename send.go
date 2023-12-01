@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"math"
@@ -10,7 +11,7 @@ import (
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
-func (app *Config) SendReviewToRabbitmq(reviewData []byte) error {
+func (app *Config) SendReviewToRabbitmq(reviewData any) error {
 	conn, err := app.rabbitmqConnection()
 	if err != nil {
 		log.Println("failed to create connection with rabbitmq", err)
@@ -63,6 +64,11 @@ func (app *Config) SendReviewToRabbitmq(reviewData []byte) error {
 	// 	return err
 	// }
 
+	data, err := json.Marshal(reviewData)
+	if err != nil {
+		log.Println(err)
+	}
+
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -73,7 +79,7 @@ func (app *Config) SendReviewToRabbitmq(reviewData []byte) error {
 		false,  // immediate
 		amqp.Publishing{
 			ContentType: "application/json",
-			Body:        reviewData,
+			Body:        data,
 		})
 
 	if err != nil {

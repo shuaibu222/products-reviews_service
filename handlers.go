@@ -12,7 +12,7 @@ import (
 
 // here should be the grpc handlers
 type ReviewsServer struct {
-	reviews.UnimplementedReviewsServiceServer
+	reviews.ReviewsServiceServer
 }
 
 func (r *ReviewsServer) CreateReview(ctx context.Context, req *reviews.ReviewRequest) (*reviews.ReviewResponse, error) {
@@ -55,9 +55,7 @@ func (r *ReviewsServer) CreateReview(ctx context.Context, req *reviews.ReviewReq
 		Response: &reviewInserted,
 	}
 
-	res := []byte(review.Msg)
-
-	err = app.SendReviewToRabbitmq(res)
+	err = app.SendReviewToRabbitmq(review)
 	if err != nil {
 		log.Println("Review service error sending to rabbitmq", err)
 	}
